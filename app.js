@@ -16,7 +16,7 @@ mongoose.connection.on("connected", ()=>{
 mongoose.connection.on("error", (err)=>{
     console.error("MongoDB connection error:",err)
 });
-app.get("/mainr", (req, res) => {
+app.get("/", (req, res) => {
     res.status(200).json({
      message:"server is live ♥",
      color:"green"
