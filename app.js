@@ -1,8 +1,8 @@
-const Router = require("./api/routes/router");
 const express = require("express");
 var cors = require("cors");
 const mongoose = require("mongoose");
 const app = express();
+const Router = require("./api/routes/router");
 app.use(express.json());
 app.use(cors()); 
 app.use('/',Router)
