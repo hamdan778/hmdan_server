@@ -42,10 +42,6 @@ app.post("/order", (req, res) => {
         })
     }
 
-
-
-
-
     res.status(200).json({
         message: "order resived",
         price: order.amount * order.price,
@@ -54,10 +50,11 @@ app.post("/order", (req, res) => {
 })
 
 
-app.get("/name", (req, res) => {
+app.prependOnceListener("/name", (req, res) => {
+    const { name } = req.body;
     res.status(200).json({
 
-        name: "mhmd",
+        name: name,
 
     })
 

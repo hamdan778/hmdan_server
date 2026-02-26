@@ -1,11 +1,11 @@
-const { Schema } = require("mongoose");
+const { Schema, model } = require("mongoose");
 
 const PRODUCT_SCHEMA = new Schema({
 
-productImage:[String],
-productName:String,
-productPrice :String,
-prudoctTopping:[String]
+    productImage: [String],
+    productName: String,
+    productPrice: String,
+
 })
 
 const PRODUCT_MODEL = model("product", PRODUCT_SCHEMA);
