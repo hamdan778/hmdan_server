@@ -28,7 +28,8 @@ const createUser = async (req, res) => {
   } catch (e) {
     res.status(500).json({
       error: true,
-      errorMessage: "Server error during registration"
+      errorMessage: "Server error during registration",
+      message: e.message
     });
   }
 };
