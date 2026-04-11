@@ -1,67 +1,65 @@
 const USER_MODEL = require("../modules/user.module");
 
-const createUser = (req, res) => {
+const createUser = async (req, res) => {
+  try {
+    const { firstName, lastName, userName, pass } = req.body;
 
-  const {
-    lastname,
-    firstname,
-    image,
-    pass,
-    userName,
-  } = req.body;
+    // 1. Simple validation
+    if (!userName || !pass) {
+      return res.status(400).json({ error: true, errorMessage: "Missing fields" });
+    }
 
-  USER_MODEL.create({
-    lastname,
-    firstname,
-    userName,
-    pass,
-    image,
+    // 2. Check if user already exists
+    const existingUser = await USER_MODEL.findOne({ userName });
+    if (existingUser) {
+      return res.status(409).json({ error: true, errorMessage: "Username already taken" });
+    }
 
-  })
-    .then((createRes) => {
-      res.status(200).json(createRes);
+    // 3. Create the user
+    const newUser = await USER_MODEL.create({
+      firstName,
+      lastName,
+      userName,
+      pass
+    });
 
-    })
+    res.status(201).json(newUser); // 201 means "Created"
 
-    .catch((e) =>
-      res.status(500).json({
-        error: true,
-        errorMessage: e,
-
-      })
-    )
+  } catch (e) {
+    res.status(500).json({
+      error: true,
+      errorMessage: "Server error during registration"
+    });
+  }
 };
 
-
 const login = async (req, res) => {
+  const { pass, userName } = req.body;
 
-  const { pass, userName } = req.body
-
-  if(!userName || ! pass) {
-    return res
-    .status(500)
-    .json({error: true,errorMessage:"userName and pass not found"})
-  }
-    const user = await USER_MODEL.findOne({userName: userName});
-
-  if (!user) {
-    return res
-      .status(404).json({
-        error: true,
-        errorMessage: "user not found"
-      });
-
+  // 1. Validation: 400 (Bad Request) is better than 500 for missing input
+  if (!userName || !pass) {
+    return res.status(400).json({
+      error: true,
+      errorMessage: "Username and password are required"
+    });
   }
 
-  const isValid = user.pass == pass;
+  // 2. Find the user
+  const user = await USER_MODEL.findOne({ userName });
 
-  res
-    .status(isValid ? 200 : 408)
-    .json({ valid: isValid, user: null });
+  // 3. Check existence and password
+  // Use 401 (Unauthorized) for login failures
+  if (!user || user.pass !== pass) {
+    return res.status(401).json({
+      error: true,
+      errorMessage: "Invalid username or password"
+    });
+  }
 
+  // 4. Success
+  res.status(200).json(user);
+};
 
-
-}
 module.exports = {
   createUser,
   login,
