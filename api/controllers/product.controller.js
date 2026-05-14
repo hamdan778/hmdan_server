@@ -1,12 +1,10 @@
 // const USER_MODEL = require("../modules/user.module");
 
 const { json } = require("express");
-const PRODUCT_MODEL = require("../modules/product.moudle");
+const PRODUCT_MODEL = require("../modules/product.module");
 
 const createProduct = (req, res) => {
-
     const {
-
         productPrice,
         productImage,
         productName,

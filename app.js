@@ -5,7 +5,7 @@ const app = express();
 const Router = require("./api/routes/router");
 app.use(express.json());
 app.use(cors()); 
-app.use('/',Router)
+app.use('/',Router())
 const mongoURL = "mongodb+srv://HAMDAN5315:0527549843aA@cluster0.ghpa40a.mongodb.net/"
 // const mongoURL = "mongodb+srv://hamdan:0527549843a@cluster0.b6kcvzp.mongodb.net/E"
 mongoose.connect(mongoURL);
